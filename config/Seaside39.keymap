@@ -48,7 +48,7 @@
 &kp ESCAPE  &kp W     &kp E         &kp R       &kp T                                  &kp Y        &kp U  &kp I      &kp O    &kp P
 &kp A       &kp S     &kp D         &lt 1 F     &kp G                                  &kp H        &kp J  &kp K      &lt 2 L  &lt 3 MINUS
 &kp Z       &kp X     &kp C         &kp V       &kp B                                  &kp N        &kp M  &kp COMMA  &kp DOT  &kp SLASH
-&kp LCTRL   &kp LWIN  &kp LEFT_ALT  &kp LSHIFT  &kp SPACE  &kp TAB      &kp BACKSPACE  &lt 1 ENTER                             &kp LANG_ZENKAKUHANKAKU
+&kp LCTRL   &kp LWIN  &kp LEFT_ALT  &kp LSHIFT  &kp SPACE  &kp TAB      &kp BACKSPACE  &lt 1 ENTER                             &kp GRAVE
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PAGE_DOWN>;
@@ -56,10 +56,10 @@
 
         MOUSE {
             bindings = <
-&kp Q              &kp N7  &kp N8  &kp N9  &kp AT                                    &kp C_MENU  &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW  &trans
-&kp LEFT_BRACKET   &kp N4  &kp N5  &kp N6  &kp KP_PLUS                               &kp HOME    &mkp MB1        &kp DOWN_ARROW  &mkp MB2         &kp COLON
-&kp RIGHT_BRACKET  &kp N1  &kp N2  &kp N3  &kp KP_MINUS                              &kp END     &kp LALT        &kp LCTRL       &kp LSHFT        &kp SEMI
-&kp BACKSLASH      &kp N0  &trans  &trans  &kp PAGE_UP   &kp PAGE_DOWN      &kp DEL  &trans                                                       &trans
+&kp Q              &kp N7  &kp N8  &kp N9  &kp LEFT_BRACKET                              &kp C_MENU  &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW  &trans
+&kp RIGHT_BRACKET  &kp N4  &kp N5  &kp N6  &kp KP_PLUS                                   &kp HOME    &mkp MB1        &kp DOWN_ARROW  &mkp MB2         &kp COLON
+&kp NUHS           &kp N1  &kp N2  &kp N3  &kp KP_MINUS                                  &kp END     &kp LALT        &kp LCTRL       &kp LSHFT        &kp SEMI
+&kp BACKSLASH      &kp N0  &trans  &trans  &kp PAGE_UP       &kp PAGE_DOWN      &kp DEL  &trans                                                       &trans
             >;
         };
 
