@@ -70,19 +70,19 @@
 
         MOUSE {
             bindings = <
-&kp Q              &kp N7  &kp N8  &kp N9  &kp LEFT_BRACKET                              &kp C_MENU  &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW  &kp LG(LS(P))
-&kp RIGHT_BRACKET  &kp N4  &kp N5  &kp N6  &kp KP_PLUS                                   &kp HOME    &mkp MB1        &kp DOWN_ARROW  &mkp MB2         &kp SINGLE_QUOTE
-&kp NUHS           &kp N1  &kp N2  &kp N3  &kp KP_MINUS                                  &kp END     &kp LALT        &kp LCTRL       &kp LSHFT        &kp SEMI
-&kp BACKSLASH      &kp N0  &trans  &trans  &kp PAGE_UP       &kp PAGE_DOWN      &kp DEL  &trans                                                       &trans
+&kp Q              &kp N7  &kp N8         &kp N9  &kp LEFT_BRACKET                              &kp C_MENU  &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW  &kp LG(LS(P))
+&kp RIGHT_BRACKET  &kp N4  &kp N5         &kp N6  &kp KP_PLUS                                   &kp HOME    &mkp MB1        &kp DOWN_ARROW  &mkp MB2         &kp SINGLE_QUOTE
+&kp NUHS           &kp N1  &kp N2         &kp N3  &kp KP_MINUS                                  &kp END     &kp LALT        &kp LCTRL       &kp LSHFT        &kp SEMI
+&kp LS(MINUS)      &kp N0  &kp BACKSLASH  &trans  &kp PAGE_UP       &kp PAGE_DOWN      &kp DEL  &trans                                                       &trans
             >;
         };
 
         Function {
             bindings = <
-&trans  &kp F7  &kp F8  &kp F9  &kp FSLH                           &kp LG(E)  &trans       &kp LC(LA(DEL))  &trans  &trans
-&trans  &kp F4  &kp F5  &kp F6  &kp EQUAL                          &trans     &kp LS(TAB)  &kp TAB          &trans  &kp ESC
-&trans  &kp F1  &kp F2  &kp F3  &kp QUESTION                       &trans     &trans       &trans           &trans  &trans
-&trans  &trans  &trans  &trans  &trans        &trans      &kp DEL  &trans                                           &trans
+&trans  &kp F7  &kp F8        &kp F9  &kp FSLH                           &kp LG(E)  &trans       &kp LC(LA(DEL))  &trans  &trans
+&trans  &kp F4  &kp F5        &kp F6  &kp EQUAL                          &trans     &kp LS(TAB)  &kp TAB          &trans  &kp ESC
+&trans  &kp F1  &kp F2        &kp F3  &kp QUESTION                       &trans     &trans       &trans           &trans  &trans
+&trans  &trans  &kp LEFT_ALT  &trans  &trans        &trans      &kp DEL  &trans                                           &trans
             >;
         };
 
