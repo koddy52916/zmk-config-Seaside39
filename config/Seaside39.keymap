@@ -73,7 +73,7 @@
 &kp Q              &kp N7  &kp N8       &kp N9  &kp LEFT_BRACKET                              &kp C_MENU  &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW  &kp LG(LS(P))
 &kp RIGHT_BRACKET  &kp N4  &kp N5       &kp N6  &kp KP_PLUS                                   &kp HOME    &mkp MB1        &kp DOWN_ARROW  &mkp MB2         &kp SINGLE_QUOTE
 &kp NUHS           &kp N1  &kp N2       &kp N3  &kp KP_MINUS                                  &kp END     &kp LALT        &kp LCTRL       &kp LSHFT        &kp SEMI
-&kp UNDER          &kp N0  &kp INT_YEN  &trans  &kp PAGE_UP       &kp PAGE_DOWN      &kp DEL  &trans                                                       &trans
+&kp LS(MINUS)      &kp N0  &kp INT_YEN  &trans  &kp PAGE_UP       &kp PAGE_DOWN      &kp DEL  &trans                                                       &trans
             >;
         };
 
