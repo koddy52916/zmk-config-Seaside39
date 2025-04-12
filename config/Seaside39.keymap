@@ -34,6 +34,13 @@
             bindings = <&kp F &kp J &kp N0 &kp N5 &kp R &kp N3 &kp N6 &kp N0 &kp N6 &kp N6 &kp N5 &kp N5>;
             label = "PCNUMBER";
         };
+
+        digitalSign: digitalSign {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LEFT_ALT &kp Y &kp N2 &kp Y &kp N1>;
+            label = "DIGITALSIGN";
+        };
     };
 
     behaviors {
@@ -63,8 +70,8 @@
 
         MOUSE {
             bindings = <
-&kp Q              &kp N7  &kp N8  &kp N9  &kp LEFT_BRACKET                              &kp C_MENU  &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW  &trans
-&kp RIGHT_BRACKET  &kp N4  &kp N5  &kp N6  &kp KP_PLUS                                   &kp HOME    &mkp MB1        &kp DOWN_ARROW  &mkp MB2         &kp COLON
+&kp Q              &kp N7  &kp N8  &kp N9  &kp LEFT_BRACKET                              &kp C_MENU  &kp LEFT_ARROW  &kp UP_ARROW    &kp RIGHT_ARROW  &kp LG(LS(P))
+&kp RIGHT_BRACKET  &kp N4  &kp N5  &kp N6  &kp KP_PLUS                                   &kp HOME    &mkp MB1        &kp DOWN_ARROW  &mkp MB2         &kp SINGLE_QUOTE
 &kp NUHS           &kp N1  &kp N2  &kp N3  &kp KP_MINUS                                  &kp END     &kp LALT        &kp LCTRL       &kp LSHFT        &kp SEMI
 &kp BACKSLASH      &kp N0  &trans  &trans  &kp PAGE_UP       &kp PAGE_DOWN      &kp DEL  &trans                                                       &trans
             >;
@@ -82,7 +89,7 @@
         Control {
             bindings = <
 &kp LC(Q)  &kp LC(W)  &kp LC(E)  &kp LC(R)  &kp LC(T)                                                &trans        &mmv MOVE_UP  &mmv MOVE_DOWN  &trans        &trans
-&kp LC(A)  &kp LC(S)  &kp LC(D)  &kp LC(F)  &kp LC(G)                                                &trans        &trans        &trans          &trans        &trans
+&kp LC(A)  &kp LC(S)  &kp LC(D)  &kp LC(F)  &kp LC(G)                                                &digitalSign  &trans        &trans          &trans        &trans
 &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &kp LC(B)                                                &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2    &bt BT_SEL 3  &trans
 &basePass  &pcNumber  &trans     &trans     &kp LA(LEFT_ARROW)  &kp LA(RIGHT_ARROW)      &kp LA(F4)  &kp LC(W)                                                 &bootloader
             >;
