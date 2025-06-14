@@ -24,8 +24,6 @@ include:
  - board: seeeduino_xiao_ble
    shield: Seaside39_L rgbled_adapter
  - board: seeeduino_xiao_ble
-   shield: dummy
-   cmake-args: '-DSHIELD="Seaside39_dongle prospector_adapter"'
-   artifact-name: dongle_with_adapter
+   shield: Kconfig_dongle prospector_adapter
  - board: seeeduino_xiao_ble
    shield: settings_reset
