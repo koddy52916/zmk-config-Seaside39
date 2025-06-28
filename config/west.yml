@@ -6,8 +6,6 @@ manifest:
       url-base: https://github.com/inorichi
     - name: caksoylar
       url-base: https://github.com/caksoylar
-    - name: carrefinho                            # <--- added this line for prospector
-      url-base: https://github.com/carrefinho     # <--- anded this line for prospector
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -19,8 +17,5 @@ manifest:
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
-    - name: prospector-zmk-module                 # <--- anded this line for prospector
-      remote: carrefinho                          # <--- anded this line for prospector
-      revision: main                              # <--- anded this line for prospector
   self:
     path: config
