@@ -1,68 +1,68 @@
 # 元のコード
-# on: [push, pull_request, workflow_dispatch]
-
-# jobs:
-#   build:
-#     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
-
-# ChatGPTが作ったビルド高速化コード_2025/8/8
-name: ZMK Custom Build
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
 
-    steps:
-      - name: Checkout Config Repository
-        uses: actions/checkout@v3
+# # ChatGPTが作ったビルド高速化コード_2025/8/8
+# name: ZMK Custom Build
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+# on:
+#   push:
+#     branches: [main]
+#   workflow_dispatch:
 
-      - name: Install Dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y cmake ninja-build gperf ccache dfu-util device-tree-compiler wget \
-            python3-pip python3-setuptools python3-wheel xz-utils file make gcc gcc-multilib \
-            libncurses-dev libffi-dev libssl-dev libusb-1.0-0-dev
-          pip3 install west
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-      - name: Cache Zephyr & Modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.west
-            ~/zephyrproject
-            ~/.cache
-          key: ${{ runner.os }}-zmk-${{ hashFiles('**/west.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-zmk-
+#     steps:
+#       - name: Checkout Config Repository
+#         uses: actions/checkout@v3
 
-      - name: Initialize West
-        run: |
-          west init -l config
-          west update
-          west zephyr-export
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
 
-      - name: Build Seaside39 Right (master)
-        run: |
-          west build -s zmk/app -d build/right -b seeeduino_xiao_ble -- -DSHIELD=Seaside39_R
+#       - name: Install Dependencies
+#         run: |
+#           sudo apt update
+#           sudo apt install -y cmake ninja-build gperf ccache dfu-util device-tree-compiler wget \
+#             python3-pip python3-setuptools python3-wheel xz-utils file make gcc gcc-multilib \
+#             libncurses-dev libffi-dev libssl-dev libusb-1.0-0-dev
+#           pip3 install west
 
-      - name: Build Seaside39 Left (peripheral)
-        run: |
-          west build -s zmk/app -d build/left -b seeeduino_xiao_ble -- -DSHIELD=Seaside39_L
+#       - name: Cache Zephyr & Modules
+#         uses: actions/cache@v3
+#         with:
+#           path: |
+#             ~/.west
+#             ~/zephyrproject
+#             ~/.cache
+#           key: ${{ runner.os }}-zmk-${{ hashFiles('**/west.yml') }}
+#           restore-keys: |
+#             ${{ runner.os }}-zmk-
 
-      - name: Upload Firmware
-        uses: actions/upload-artifact@v4  # ← 🔁 v3 → v4 に修正！
-        with:
-          name: firmware
-          path: |
-            build/right/zephyr/zmk.uf2
-            build/left/zephyr/zmk.uf2
+#       - name: Initialize West
+#         run: |
+#           west init -l config
+#           west update
+#           west zephyr-export
+
+#       - name: Build Seaside39 Right (master)
+#         run: |
+#           west build -s zmk/app -d build/right -b seeeduino_xiao_ble -- -DSHIELD=Seaside39_R
+
+#       - name: Build Seaside39 Left (peripheral)
+#         run: |
+#           west build -s zmk/app -d build/left -b seeeduino_xiao_ble -- -DSHIELD=Seaside39_L
+
+#       - name: Upload Firmware
+#         uses: actions/upload-artifact@v4  # ← 🔁 v3 → v4 に修正！
+#         with:
+#           name: firmware
+#           path: |
+#             build/right/zephyr/zmk.uf2
+#             build/left/zephyr/zmk.uf2
