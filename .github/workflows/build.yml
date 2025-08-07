@@ -60,7 +60,7 @@ jobs:
           west build -s zmk/app -d build/left -b seeeduino_xiao_ble -- -DSHIELD=Seaside39_L
 
       - name: Upload Firmware
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # ← 🔁 v3 → v4 に修正！
         with:
           name: firmware
           path: |
