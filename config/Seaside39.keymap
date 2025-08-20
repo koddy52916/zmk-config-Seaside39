@@ -157,9 +157,9 @@
 
         Control {
             bindings = <
-&kp LC(Q)  &kp LC(W)  &kp LC(E)  &kp LC(R)  &kp LC(T)                                                &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &trans  &trans
+&kp LC(Q)  &kp LC(W)  &kp LC(E)  &kp LC(R)  &kp LC(T)                                                &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &trans  &bt BT_CLR
 &kp LC(A)  &kp LC(S)  &kp LC(D)  &kp LC(F)  &kp LC(G)                                                &digitalSign  &trans        &trans        &trans  &trans
-&kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &kp LC(B)                                                &bt0          &bt1          &bt2          &trans  &trans
+&kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &kp LC(B)                                                &bt0          &bt1          &bt2          &trans  &bt BT_CLR_ALL
 &basePass  &pcNumber  &myNumber  &trans     &kp LA(LEFT_ARROW)  &kp LA(RIGHT_ARROW)      &kp LA(F4)  &kp LC(W)                                         &bootloader
             >;
         };
