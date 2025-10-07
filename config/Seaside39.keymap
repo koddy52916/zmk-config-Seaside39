@@ -148,10 +148,10 @@
 
         Function {
             bindings = <
-&trans  &kp F7  &kp F8  &kp F9  &kp FSLH                          &kp LA(F8)          &kp LA(LS(U))  &trans   &trans  &trans
-&trans  &kp F4  &kp F5  &kp F6  &kp EQUAL                         &kp LC(LA(DELETE))  &kp LS(TAB)    &kp TAB  &trans  &kp ESC
-&trans  &kp F1  &kp F2  &kp F3  &kp QUESTION                      &trans              &trans         &trans   &trans  &trans
-&trans  &trans  &trans  &trans  &trans        &trans      &trans  &trans                                              &trans
+&kp LC(LA(C))  &kp F7  &kp F8  &kp F9  &kp FSLH                          &kp LA(F8)          &kp LA(LS(U))  &trans   &trans  &trans
+&kp LA(LC(O))  &kp F4  &kp F5  &kp F6  &kp EQUAL                         &kp LC(LA(DELETE))  &kp LS(TAB)    &kp TAB  &trans  &kp ESC
+&kp LC(LA(Z))  &kp F1  &kp F2  &kp F3  &kp QUESTION                      &trans              &trans         &trans   &trans  &trans
+&trans         &trans  &trans  &trans  &trans        &trans      &trans  &trans                                              &trans
             >;
         };
 
