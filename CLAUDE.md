@@ -1,56 +1,56 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+このファイルは、このリポジトリで作業する際にClaude Code(claude.ai/code)が参照するガイドです。
 
-## What this repository is
+## このリポジトリについて
 
-ZMK firmware configuration for **Seaside39**, a wireless split keyboard (right-hand trackball) built by converting a Keyball39 to use a Seeed XIAO BLE nRF52840 MCU. This repo contains only firmware *config* (keymap, Kconfig, devicetree overlays, `west.yml` manifest) — the actual ZMK/Zephyr source is pulled in during CI, not stored here.
+**Seaside39**（Keyball39をSeeed XIAO BLE nRF52840マイコンで無線化したトラックボール付き分割キーボード）のZMKファームウェア設定リポジトリです。このリポジトリに含まれるのはファームウェアの*設定*のみ（keymap、Kconfig、devicetreeオーバーレイ、`west.yml`マニフェスト）で、実際のZMK/Zephyrのソースコード自体はCIビルド時に取得されるものであり、このリポジトリには含まれません。
 
-- R (right) side = ZMK split **central**, has the PMW3610 trackball sensor, connects to hosts (PC/iPad/etc.) over BLE.
-- L (left) side = ZMK split **peripheral**, connects only to the R side.
+- R（右）側 = ZMKスプリットの**central**。PMW3610トラックボールセンサーを搭載し、PC/iPad等のホストとBLE接続する側。
+- L（左）側 = ZMKスプリットの**peripheral**。R側とのみ接続する側。
 
-## Build / CI
+## ビルド/CI
 
-There is no local Zephyr/ARM toolchain in this repo or dev environment. **All builds happen via GitHub Actions** (`.github/workflows/build.yml`), which calls the reusable `zmkfirmware/zmk/.github/workflows/build-user-config.yml` workflow. The board+shield build matrix is defined in `build.yaml` (produces `Seaside39_R rgbled_adapter`, `Seaside39_L rgbled_adapter`, and `settings_reset` firmware).
+このリポジトリにも開発環境にもローカルのZephyr/ARMツールチェーンは無く、**ビルドはすべてGitHub Actions経由**（`.github/workflows/build.yml`）で行われます。このワークフローは再利用可能な`zmkfirmware/zmk/.github/workflows/build-user-config.yml`を呼び出しています。board+shieldのビルドマトリクスは`build.yaml`で定義されており、`Seaside39_R rgbled_adapter`・`Seaside39_L rgbled_adapter`・`settings_reset`の3種のファームウェアが生成されます。
 
-Workflow:
-1. Edit config files, commit, `git push` to `main`.
-2. Check the run with `gh` CLI: `gh run list --limit 1`, then `gh run view <id>` / `gh run view <id> --log-failed` to inspect failures.
-3. Download the `.uf2` artifacts from the successful run's Artifacts.
-4. Flash: double-tap the XIAO's reset button to enter bootloader mode (shows up as a `XIAO SENSE` USB drive), copy the `.uf2` onto it. Flash `settings_reset-*.uf2` first only when BLE bond/identity-related config changed (e.g. `CONFIG_BT_PRIVACY`), otherwise flash the shield firmware directly.
+手順:
+1. 設定ファイルを編集し、コミットして`main`に`git push`する。
+2. `gh` CLIでビルド結果を確認する: `gh run list --limit 1`、失敗時は`gh run view <id>` / `gh run view <id> --log-failed`でログを確認する。
+3. 成功したrunのArtifactsから`.uf2`をダウンロードする。
+4. 書き込み: XIAOのリセットボタンを素早く2回押してブートローダーモードにする（`XIAO SENSE`というUSBドライブとして認識される）と、そこへ`.uf2`をコピーする。BLEのボンド/アイデンティティに関わる設定（例: `CONFIG_BT_PRIVACY`）を変更した場合のみ、先に`settings_reset-*.uf2`を書き込んでからshield本体のファームウェアを書き込む。それ以外は直接shield本体のファームウェアを書き込めばよい。
 
-**Important pitfall (bit the project for ~9 months, Oct 2025–Jul 2026):** `config/west.yml` and `.github/workflows/build.yml` previously tracked `revision: main` for `zmk` and used `build-user-config.yml@main`. Upstream ZMK `main` broke this board's build (Zephyr 4.1 board-qualifier migration), and CI silently failed on every push without anyone noticing (no local build to catch it). **Always confirm a push actually produced a successful CI run (`gh run list`) before assuming a config change took effect on real hardware** — a config change that never built successfully was never flashed.
+**重要な落とし穴（2025年10月〜2026年7月の約9ヶ月間、プロジェクトを悩ませた問題）:** かつて`config/west.yml`と`.github/workflows/build.yml`は`zmk`の`revision: main`および`build-user-config.yml@main`を追従する設定になっていた。ZMK本体のmainブランチ側の変更（Zephyr 4.1のboard qualifier移行）でこのボードのビルドが壊れ、**誰も気づかないままCIが全てのpushで失敗し続けていた**（ローカルビルドで検知する手段が無かったため）。**設定変更が実機に反映されたと思い込む前に、pushが実際にCIで成功しているか(`gh run list`)を必ず確認すること** — ビルドに一度も成功していない設定変更は、実機には一度も書き込まれていない。
 
-`zmk`, `zmk-rgbled-widget`, and the build workflow ref are now **pinned to `v0.3.0`** in `config/west.yml` / `build.yml` for this reason. If bumping these versions, pin `zmk` and `zmk-rgbled-widget` to the *same* ZMK release/tag — mismatched versions between the workflow, `zmk`, and community modules (`zmk-rgbled-widget`, `zmk-pmw3610-driver`) cause Kconfig/devicetree-alias errors that are easy to misattribute to unrelated config changes. `zmk-pmw3610-driver` is left on `main` since it hasn't had a new commit since April 2024 (effectively frozen).
+この経緯から、`zmk`・`zmk-rgbled-widget`・ビルドワークフローの参照は現在`config/west.yml`/`build.yml`内で**`v0.3.0`に固定**されている。これらのバージョンを上げる場合は、`zmk`と`zmk-rgbled-widget`を**同じ**ZMKリリース/タグに揃えて固定すること — ワークフロー・`zmk`本体・コミュニティモジュール（`zmk-rgbled-widget`、`zmk-pmw3610-driver`）間でバージョンが食い違うと、Kconfigやdevicetreeエイリアス関連のエラーが発生し、無関係な設定変更のせいだと誤診断しやすい。`zmk-pmw3610-driver`は2024年4月以降コミットが無く（実質凍結状態）、`main`のままにしてある。
 
-## Repo structure
+## リポジトリ構造
 
-- `config/west.yml` — manifest pulling in `zmk` (core), `zmk-pmw3610-driver` (trackball), `zmk-rgbled-widget` (status LED), `prospector-zmk-module` (currently disabled, see below).
-- `config/Seaside39.keymap` — the keymap (see below).
+- `config/west.yml` — `zmk`（本体）、`zmk-pmw3610-driver`（トラックボール）、`zmk-rgbled-widget`（ステータスLED）、`prospector-zmk-module`（現在無効化中、下記参照）を取り込むマニフェスト。
+- `config/Seaside39.keymap` — keymap本体（詳細は下記）。
 - `config/boards/shields/Seaside39/`:
-  - `Seaside39.dtsi` — shared devicetree: physical key layout, matrix transform, kscan (shared by L and R).
-  - `Seaside39_R.overlay` / `Seaside39_L.overlay` — per-side devicetree: column GPIOs, and (R only) SPI + PMW3610 trackball node.
-  - `Seaside39_R.conf` / `Seaside39_L.conf` — per-side Kconfig. Nearly all BLE/trackball/LED tuning lives in `Seaside39_R.conf` since R is the central/host-facing side.
-  - `Kconfig.defconfig` — sets `ZMK_SPLIT`, `ZMK_SPLIT_ROLE_CENTRAL` (R only), and keyboard name per side.
-- `build.yaml` — GitHub Actions build matrix.
-- `docs/buildguide.md` — end-user hardware assembly + firmware flashing guide (Japanese).
+  - `Seaside39.dtsi` — L/R共通のdevicetree（物理キー配置、マトリクス変換、kscan）。
+  - `Seaside39_R.overlay` / `Seaside39_L.overlay` — 各側固有のdevicetree（列のGPIO、R側のみSPI+PMW3610トラックボールノード）。
+  - `Seaside39_R.conf` / `Seaside39_L.conf` — 各側固有のKconfig。BLE/トラックボール/LED関連の調整はほぼ全て、host側であるR側の`Seaside39_R.conf`に集中している。
+  - `Kconfig.defconfig` — `ZMK_SPLIT`、`ZMK_SPLIT_ROLE_CENTRAL`（R側のみ）、各側のキーボード名を設定。
+- `build.yaml` — GitHub Actionsのビルドマトリクス。
+- `docs/buildguide.md` — エンドユーザー向けのハードウェア組み立て・ファームウェア書き込みガイド（日本語）。
 
-## Keymap structure (`config/Seaside39.keymap`)
+## keymapの構造（`config/Seaside39.keymap`）
 
-Layers: `default_Win` (0), `default_iOS` (1), `MOUSE` (4), `Function` (2), `Control` (3, note: despite being defined last it's `&lt 3`/layer index 3 — check `#define`s at top for `MOUSE`/`SCROLL`/`NUM` layer numbers before assuming layer order from file order).
+レイヤー: `default_Win`（0）、`default_iOS`（1）、`MOUSE`（4）、`Function`（2）、`Control`（3。ファイル内では最後に定義されているが`&lt 3`/レイヤー番号3である点に注意 — レイヤー番号をファイル中の記述順で判断せず、冒頭の`#define`（`MOUSE`/`SCROLL`/`NUM`）を確認すること）。
 
-- Two base layers exist because Windows and iOS/macOS use different modifier conventions (Ctrl vs Cmd, etc.) — `default_iOS` uses `LEFT_GUI`/`LC(SPACE)` where `default_Win` uses `LCTRL`/`GRAVE`.
-- BLE profile switching lives on the `Control` layer:
-  - Row 1: raw `&bt BT_SEL 0/1/2` — switches BLE profile only.
-  - Row 3: `&bt0`/`&bt1`/`&bt2` macros — switch BLE profile **and** toggle the `default_iOS` layer on/off (`bt2` is the iPad-oriented profile: it also turns `default_iOS` on; `bt0`/`bt1` turn it off). Prefer these over the raw row when the target host's modifier layout differs.
-- Trackball behavior (`automouse-layer`, `scroll-layers`) is configured on the `trackball@0` node in `Seaside39_R.overlay`, not in the keymap file.
+- ベースレイヤーが2つあるのは、WindowsとiOS/macOSで修飾キーの慣習（Ctrl vs Cmd等）が異なるため。`default_iOS`は`LEFT_GUI`/`LC(SPACE)`を使用し、`default_Win`は`LCTRL`/`GRAVE`を使用する。
+- BLEプロファイル切り替えは`Control`レイヤーにある:
+  - 1行目: 素の`&bt BT_SEL 0/1/2` — BLEプロファイルの切り替えのみ行う。
+  - 3行目: `&bt0`/`&bt1`/`&bt2`マクロ — BLEプロファイル切り替えに加え、`default_iOS`レイヤーのON/OFFも同時に行う（`bt2`はiPad向けプロファイルという想定で、`default_iOS`をONにする。`bt0`/`bt1`はOFFにする）。切り替え先ホストの修飾キー配置がWindowsと異なる場合は、素の1行目よりこちらを優先して使うこと。
+- トラックボールの挙動（`automouse-layer`、`scroll-layers`）はkeymapファイルではなく、`Seaside39_R.overlay`内の`trackball@0`ノードで設定されている。
 
-## Known-sensitive Kconfig options (don't re-enable casually)
+## 扱いに注意が必要なKconfigオプション（安易に再有効化しない）
 
-These are currently commented out in `Seaside39_R.conf` after being root-caused as build- or feature-breaking; if re-enabling, expect to re-verify against a real GitHub Actions build before trusting the result:
+以下は、ビルド不能または機能不全の原因と特定された結果、現在`Seaside39_R.conf`内でコメントアウトされている。再有効化する場合は、実際にGitHub Actionsでビルドが成功することを確認してから信用すること:
 
-- `CONFIG_BT_PRIVACY=y` — conflicts with `BT_SCAN_WITH_IDENTITY` auto-selected by `ZMK_SPLIT_ROLE_CENTRAL` on this ZMK version; causes a hard Kconfig build error.
-- `CONFIG_BT_SECURITY_LESC=n` / `CONFIG_BT_SECURITY_FORCE_LESC=n` — forcing legacy (non-LESC) pairing is suspected of breaking iOS pairing.
-- `CONFIG_BT_MAX_CONN=2` — broke switching between two already-bonded host profiles (PC/iPad): the split-central link permanently consumes one connection slot, leaving effectively one spare slot, which isn't enough headroom during profile hand-off.
+- `CONFIG_BT_PRIVACY=y` — このZMKバージョンでは、`ZMK_SPLIT_ROLE_CENTRAL`が自動選択する`BT_SCAN_WITH_IDENTITY`と矛盾し、Kconfigの致命的なビルドエラーを引き起こす。
+- `CONFIG_BT_SECURITY_LESC=n` / `CONFIG_BT_SECURITY_FORCE_LESC=n` — レガシー（非LESC）ペアリングを強制すると、iOSとのペアリングが失敗すると推定されている。
+- `CONFIG_BT_MAX_CONN=2` — 既にボンド済みの2つのホストプロファイル(PC/iPad)間の切り替えが失敗する原因になった。central側はスプリット接続で常時1コネクション枠を消費するため、実質的な予備枠が1つしか残らず、プロファイルの切り替え時（旧接続の切断と新接続の確立が重なるタイミング）の余裕が不足していた。
 
-`CONFIG_ZMK_STATUS_ADVERTISEMENT` / `CONFIG_BT=y` / `CONFIG_BT_PERIPHERAL=y` (Prospector scanner support) are also commented out — enabling them previously broke iOS pairing outright.
+`CONFIG_ZMK_STATUS_ADVERTISEMENT` / `CONFIG_BT=y` / `CONFIG_BT_PERIPHERAL=y`（Prospector scanner対応）も同様にコメントアウトされている — 有効化すると以前iOSとのペアリングが完全に失敗する原因になった。
